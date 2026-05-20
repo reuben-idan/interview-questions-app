@@ -1,85 +1,77 @@
-# InterviewIQ — AI Interview Question Generator
+# InterviewIQ
 
-A minimal, elegant web app that generates role-specific interview questions using Google Gemini AI. Built with Flask, vanilla JS, and a frosted-glass UI.
+AI-powered interview question generator. Enter any job title, get 3 tailored interview questions instantly.
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.1-green)
-![Gemini](https://img.shields.io/badge/Google%20Gemini-2.0%20Flash-orange)
-![Deploy](https://img.shields.io/badge/AWS-Elastic%20Beanstalk-yellow)
+![Gemini](https://img.shields.io/badge/Gemini-2.0%20Flash-orange)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-## Quick Start
+## Live Demo
+
+🔗 [https://interviewiq-xxxx.onrender.com](https://interviewiq-xxxx.onrender.com)
+
+## Features
+
+- Role-specific question generation via Google Gemini 2.0 Flash
+- Clean glassmorphic UI with animated loading state
+- Error handling with user-friendly feedback
+- Single-page frontend, zero build step
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| AI | Google Gemini 2.0 Flash |
+| Backend | Python, Flask |
+| Frontend | Vanilla HTML/CSS/JS |
+| Hosting | Render |
+
+## Run Locally
 
 ```bash
-# 1. Clone the repo
 git clone https://github.com/reuben-idan/interview-questions-app.git
 cd interview-questions-app
-
-# 2. Install dependencies
 pip install -r requirements.txt
-
-# 3. Set your Gemini API key (get one free at https://ai.google.dev)
 set GEMINI_API_KEY=your_key_here
-
-# 4. Run the app
 python app.py
-
-# 5. Open in browser
-start http://localhost:3000
 ```
+
+Open http://localhost:3000
 
 ## Project Structure
 
 ```
-interview-questions-app/
-├── app.py                  # Flask server + Gemini API integration
+├── app.py              # Flask server + Gemini integration
 ├── public/
-│   └── index.html          # Frontend (HTML/CSS/JS single file)
-├── requirements.txt        # Python dependencies
-├── Procfile                # Gunicorn config for production
-├── deploy.bat              # One-click AWS deployment script
-├── .ebextensions/
-│   └── 01_python.config    # Elastic Beanstalk settings
-└── .env                    # API key (not committed)
+│   └── index.html      # Frontend (single file)
+├── requirements.txt    # Dependencies
+├── render.yaml         # Render deployment config
+├── Procfile            # Production server command
+└── .env                # API key (not committed)
 ```
 
-## Deploy
+## Deployment
 
 ### Render (Free)
 
-1. Push this repo to GitHub
-2. Go to [render.com](https://render.com), connect your GitHub repo
-3. Create a new **Web Service**, select this repo
-4. Add environment variable: `GEMINI_API_KEY` = your key
-5. Deploy — Render auto-detects the `render.yaml` config
+1. Connect this repo at [render.com](https://render.com)
+2. Add env var: `GEMINI_API_KEY`
+3. Deploy — auto-configured via `render.yaml`
 
 ### AWS Elastic Beanstalk
-
-Prerequisites: AWS CLI configured (`aws configure`) and EB CLI installed (`pip install awsebcli`).
 
 ```bash
 set GEMINI_API_KEY=your_key_here
 deploy.bat
 ```
 
-Or step by step:
+## Design Decisions
 
-```bash
-eb init interview-questions-app --region us-east-1 --platform "Python 3.12 running on 64bit Amazon Linux 2023"
-eb create interviewiq-env --single --instance-type t3.micro
-aws elasticbeanstalk update-environment --environment-name interviewiq-env --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=GEMINI_API_KEY,Value=YOUR_KEY
-eb deploy
-eb open
-```
-
-## Tech Stack
-
-| Layer | Choice | Why |
-|-------|--------|-----|
-| AI | Google Gemini 2.0 Flash | Fast, free tier, great structured output |
-| Backend | Python + Flask | Clean, readable, minimal boilerplate |
-| Frontend | Vanilla HTML/CSS/JS | Zero build step, instant load |
-| UI Style | Apple glassmorphic | Frosted glass + animated liquid background |
-| Hosting | AWS Elastic Beanstalk | Production-grade, auto-scaling, easy CLI deploy |
+- **Gemini 2.0 Flash** — fast inference, free tier, reliable structured output
+- **Flask** — minimal overhead for a single-endpoint API
+- **Vanilla JS** — no framework needed for a focused UI; instant load
+- **Prompt engineering** — requests exactly 3 questions as a JSON array, assessing both technical and behavioral fit
 
 ## License
 
