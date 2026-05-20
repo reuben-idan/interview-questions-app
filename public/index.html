@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InterviewIQ — AI Question Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.12);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+      --accent: #60a5fa;
+      --accent-glow: rgba(96, 165, 250, 0.4);
+      --text-primary: #f1f5f9;
+      --text-secondary: rgba(241, 245, 249, 0.7);
+      --radius: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      background: #0f172a;
+      padding: 1rem;
+    }
+
+    /* Animated water gradient background */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: 
+        radial-gradient(ellipse at 20% 50%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+        #0f172a;
+    }
+
+    /* Floating orbs for water/liquid effect */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 400px; height: 400px;
+      background: rgba(56, 189, 248, 0.3);
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 350px; height: 350px;
+      background: rgba(139, 92, 246, 0.25);
+      bottom: -80px; right: -80px;
+      animation-delay: -3s;
+    }
+
+    .orb-3 {
+      width: 250px; height: 250px;
+      background: rgba(59, 130, 246, 0.3);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -5s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* Main container - glass card */
+    .container {
+      width: 100%;
+      max-width: 560px;
+      position: relative;
+    }
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .glass-card:hover {
+      box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      border-radius: 16px;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .logo svg {
+      width: 28px; height: 28px;
+      fill: white;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      font-weight: 300;
+    }
+
+    /* Form */
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      font-size: 1rem;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.1);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .submit-btn:hover:not(:disabled)::before { opacity: 1; }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(96, 165, 250, 0.35);
+    }
+
+    .submit-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Loading state */
+    .loading-state {
+      display: none;
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .loading-state.active { display: block; }
+
+    .ripple {
+      display: inline-block;
+      position: relative;
+      width: 64px; height: 64px;
+    }
+
+    .ripple span {
+      position: absolute;
+      border: 3px solid var(--accent);
+      border-radius: 50%;
+      animation: ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+
+    .ripple span:nth-child(2) { animation-delay: -0.5s; }
+
+    @keyframes ripple {
+      0% { width: 0; height: 0; top: 32px; left: 32px; opacity: 1; }
+      100% { width: 64px; height: 64px; top: 0; left: 0; opacity: 0; }
+    }
+
+    .loading-text {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      font-weight: 400;
+    }
+
+    /* Results */
+    .results-container {
+      display: none;
+      margin-top: 1.5rem;
+    }
+
+    .results-container.active {
+      display: block;
+      animation: fadeUp 0.5s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .results-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .question-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+      animation: slideIn 0.4s ease backwards;
+    }
+
+    .question-card:nth-child(2) { animation-delay: 0.1s; }
+    .question-card:nth-child(3) { animation-delay: 0.2s; }
+    .question-card:nth-child(4) { animation-delay: 0.3s; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .question-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(96, 165, 250, 0.3);
+      transform: translateX(4px);
+    }
+
+    .question-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px; height: 24px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.75rem;
+    }
+
+    .question-text {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    /* Error */
+    .error-msg {
+      display: none;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      color: #fca5a5;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .error-msg.active { display: block; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(255,255,255,0.25);
+      font-size: 0.75rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .glass-card { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.3rem; }
+      .orb-1 { width: 250px; height: 250px; }
+      .orb-2 { width: 200px; height: 200px; }
+      .orb-3 { width: 150px; height: 150px; }
+    }
+
+    @media (min-width: 768px) {
+      .glass-card { padding: 3rem 2.5rem; }
+      h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-canvas"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="container">
+    <div class="glass-card">
+      <div class="header">
+        <div class="logo">
+          <svg viewBox="0 0 24 24"><path d="M20 6h-1v8c0 .55-.45 1-1 1H6v1c0 1.1.9 2 2 2h10l4 4V8c0-1.1-.9-2-2-2zm-3 5V4c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v13l4-4h9c1.1 0 2-.9 2-2z"/></svg>
+        </div>
+        <h1>InterviewIQ</h1>
+        <p class="subtitle">AI-powered interview questions tailored to any role</p>
+      </div>
+
+      <form id="form">
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="jobTitle" 
+            placeholder="Enter a job title — e.g. Customer Success Manager" 
+            required 
+            autocomplete="off"
+          >
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">Generate Questions</button>
+      </form>
+
+      <div class="error-msg" id="error"></div>
+
+      <div class="loading-state" id="loading">
+        <div class="ripple"><span></span><span></span></div>
+        <p class="loading-text">Crafting thoughtful questions...</p>
+      </div>
+
+      <div class="results-container" id="results"></div>
+
+      <div class="footer">Powered by Google Gemini</div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const input = document.getElementById('jobTitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+    const error = document.getElementById('error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const jobTitle = input.value.trim();
+      if (!jobTitle) return;
+
+      error.classList.remove('active');
+      results.classList.remove('active');
+      loading.classList.add('active');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Generating...';
+
+      try {
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ jobTitle })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        results.innerHTML = `
+          <div class="results-header">Questions for ${jobTitle}</div>
+          ${data.questions.map((q, i) => `
+            <div class="question-card">
+              <div class="question-number">${i + 1}</div>
+              <p class="question-text">${q}</p>
+            </div>
+          `).join('')}
+        `;
+        results.classList.add('active');
+      } catch (err) {
+        error.textContent = err.message || 'Something went wrong. Please try again.';
+        error.classList.add('active');
+      } finally {
+        loading.classList.remove('active');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Generate Questions';
+      }
+    });
+  </script>
+</body>
+</html>
