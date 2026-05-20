@@ -9,7 +9,7 @@ AI-powered interview question generator. Enter any job title, get 3 tailored int
 
 ## Live Demo
 
-🔗 [https://interviewiq-xxxx.onrender.com](https://interviewiq-xxxx.onrender.com)
+🔗 [https://interview-questions-app-8xn9.onrender.com](https://interview-questions-app-8xn9.onrender.com)
 
 ## Features
 
