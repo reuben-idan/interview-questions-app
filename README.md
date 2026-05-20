@@ -42,7 +42,17 @@ interview-questions-app/
 └── .env                    # API key (not committed)
 ```
 
-## Deploy to AWS Elastic Beanstalk
+## Deploy
+
+### Render (Free)
+
+1. Push this repo to GitHub
+2. Go to [render.com](https://render.com), connect your GitHub repo
+3. Create a new **Web Service**, select this repo
+4. Add environment variable: `GEMINI_API_KEY` = your key
+5. Deploy — Render auto-detects the `render.yaml` config
+
+### AWS Elastic Beanstalk
 
 Prerequisites: AWS CLI configured (`aws configure`) and EB CLI installed (`pip install awsebcli`).
 
