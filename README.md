@@ -1,29 +1,48 @@
 # InterviewIQ — AI Interview Question Generator
 
-A minimal, elegant web app that generates role-specific interview questions using Google Gemini AI.
+A minimal, elegant web app that generates role-specific interview questions using Google Gemini AI. Built with Flask, vanilla JS, and a frosted-glass UI.
 
-## Local Setup
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Flask](https://img.shields.io/badge/Flask-3.1-green)
+![Gemini](https://img.shields.io/badge/Google%20Gemini-2.0%20Flash-orange)
+![Deploy](https://img.shields.io/badge/AWS-Elastic%20Beanstalk-yellow)
 
-1. Get a free Gemini API key at [ai.google.dev](https://ai.google.dev)
+## Quick Start
 
-2. Install dependencies:
 ```bash
+# 1. Clone the repo
+git clone https://github.com/reuben-idan/interview-questions-app.git
+cd interview-questions-app
+
+# 2. Install dependencies
 pip install -r requirements.txt
-```
 
-3. Set your API key:
-```bash
+# 3. Set your Gemini API key (get one free at https://ai.google.dev)
 set GEMINI_API_KEY=your_key_here
-```
 
-4. Run:
-```bash
+# 4. Run the app
 python app.py
+
+# 5. Open in browser
+start http://localhost:3000
 ```
 
-5. Open http://localhost:3000
+## Project Structure
 
-## Deploy to AWS (Elastic Beanstalk)
+```
+interview-questions-app/
+├── app.py                  # Flask server + Gemini API integration
+├── public/
+│   └── index.html          # Frontend (HTML/CSS/JS single file)
+├── requirements.txt        # Python dependencies
+├── Procfile                # Gunicorn config for production
+├── deploy.bat              # One-click AWS deployment script
+├── .ebextensions/
+│   └── 01_python.config    # Elastic Beanstalk settings
+└── .env                    # API key (not committed)
+```
+
+## Deploy to AWS Elastic Beanstalk
 
 Prerequisites: AWS CLI configured (`aws configure`) and EB CLI installed (`pip install awsebcli`).
 
@@ -32,7 +51,8 @@ set GEMINI_API_KEY=your_key_here
 deploy.bat
 ```
 
-Or manually:
+Or step by step:
+
 ```bash
 eb init interview-questions-app --region us-east-1 --platform "Python 3.12 running on 64bit Amazon Linux 2023"
 eb create interviewiq-env --single --instance-type t3.micro
@@ -41,10 +61,16 @@ eb deploy
 eb open
 ```
 
-## Tech Decisions
+## Tech Stack
 
-- **Google Gemini 2.0 Flash** — fast, free tier, excellent at structured output
-- **Python + Flask** — clean, readable, easy to explain in a walkthrough
-- **Vanilla HTML/CSS/JS frontend** — zero build step, instant load
-- **Apple glassmorphic UI** — frosted glass aesthetic with animated liquid background
-- **AWS Elastic Beanstalk** — production-grade hosting, auto-scaling, easy CLI deploy
+| Layer | Choice | Why |
+|-------|--------|-----|
+| AI | Google Gemini 2.0 Flash | Fast, free tier, great structured output |
+| Backend | Python + Flask | Clean, readable, minimal boilerplate |
+| Frontend | Vanilla HTML/CSS/JS | Zero build step, instant load |
+| UI Style | Apple glassmorphic | Frosted glass + animated liquid background |
+| Hosting | AWS Elastic Beanstalk | Production-grade, auto-scaling, easy CLI deploy |
+
+## License
+
+MIT
