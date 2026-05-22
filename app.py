@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 import os
 import json
 
-load_dotenv()
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 app = Flask(__name__, static_folder='public')
 
