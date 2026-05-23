@@ -4,7 +4,7 @@ AI-powered interview question generator. Enter any job title, get 3 tailored int
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.1-green)
-![Gemini](https://img.shields.io/badge/Gemini-2.0%20Flash-orange)
+![Gemini](https://img.shields.io/badge/Gemini-2.5%20Flash%20Lite-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 ## Live Demo
@@ -13,7 +13,7 @@ AI-powered interview question generator. Enter any job title, get 3 tailored int
 
 ## Features
 
-- Role-specific question generation via Google Gemini 2.0 Flash
+- Role-specific question generation via Google Gemini 2.5 Flash Lite
 - Clean glassmorphic UI with animated loading state
 - Error handling with user-friendly feedback
 - Single-page frontend, zero build step
@@ -22,7 +22,7 @@ AI-powered interview question generator. Enter any job title, get 3 tailored int
 
 | Layer | Technology |
 |-------|-----------|
-| AI | Google Gemini 2.0 Flash |
+| AI | Google Gemini 2.5 Flash Lite |
 | Backend | Python, Flask |
 | Frontend | Vanilla HTML/CSS/JS |
 | Hosting | Render |
@@ -68,7 +68,7 @@ deploy.bat
 
 ## Design Decisions
 
-- **Gemini 2.0 Flash** — fast inference, free tier, reliable structured output
+- **Gemini 2.5 Flash Lite** — fast inference, free tier, reliable structured output
 - **Flask** — minimal overhead for a single-endpoint API
 - **Vanilla JS** — no framework needed for a focused UI; instant load
 - **Prompt engineering** — requests exactly 3 questions as a JSON array, assessing both technical and behavioral fit
