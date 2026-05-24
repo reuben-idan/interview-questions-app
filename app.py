@@ -48,7 +48,7 @@ def generate():
 
     except Exception as e:
         print(f'Error: {e}')
-        return jsonify({'error': 'Failed to generate questions. Please try again.'}), 500
+        return jsonify({'error': f'Failed to generate questions: {str(e)}'}), 500
 
 
 if __name__ == '__main__':
