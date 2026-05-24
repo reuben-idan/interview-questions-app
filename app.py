@@ -8,9 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 app = Flask(__name__, static_folder='public')
-
-def get_client():
-    return genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
+client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
 
 
 @app.route('/')
@@ -33,7 +31,7 @@ def generate():
             'Return ONLY a JSON array of 3 strings. Example: ["Q1?", "Q2?", "Q3?"]'
         )
 
-        response = get_client().models.generate_content(
+        response = client.models.generate_content(
             model="gemini-2.5-flash-lite",
             contents=prompt
         )
