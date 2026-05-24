@@ -53,18 +53,9 @@ Open http://localhost:3000
 
 ## Deployment
 
-### Render (Free)
-
 1. Connect this repo at [render.com](https://render.com)
 2. Add env var: `GEMINI_API_KEY`
 3. Deploy — auto-configured via `render.yaml`
-
-### AWS Elastic Beanstalk
-
-```bash
-set GEMINI_API_KEY=your_key_here
-deploy.bat
-```
 
 ## Design Decisions
 
